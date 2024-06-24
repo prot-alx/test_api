@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { UserModule } from '../user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import configurations from '../configurations';
+import configurations from '../../configurations';
+import { User } from '../user/models/user.model';
 
 @Module({
   imports: [
@@ -22,9 +23,9 @@ import configurations from '../configurations';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        //autoLoadModels: true,
+        autoLoadModels: true,
         synchronize: true,
-        models: [],
+        models: [User],
       }),
     }),
     UserModule,
