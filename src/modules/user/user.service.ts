@@ -8,38 +8,44 @@ import { AppError } from 'src/common/errors';
 @Injectable()
 export class UserService {
 
-    constructor(@InjectModel(User) private readonly userRepository: typeof User) {}
+    constructor(@InjectModel(User) private readonly userRepository: typeof User) { }
 
-    async hashPassword (password: string | Buffer) {
+    async hashPassword(password: string | Buffer) {
         return bcrypt.hash(password, 10);
     }
 
-    async findUserByEmail (email: string) {
+    async findUserByEmail(email: string) {
         return this.userRepository.findOne({ where: { email: email } })
     }
 
-    async findUserByLogin (userName: string) {
-        return this.userRepository.findOne({ where : { userName: userName}})
+    async findUserByNumber(phone: string) {
+        return this.userRepository.findOne({ where: { phone: phone } })
     }
 
-    async createUser(dto: CreateUserDTO): Promise <CreateUserDTO> {
-        const existUserLogin = await this.findUserByLogin(dto.userName)
+    async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
+        const existUserPhone = await this.findUserByNumber(dto.phone)
         const existUserEmail = await this.findUserByEmail(dto.email)
 
         if (existUserEmail) {
             throw new BadRequestException(AppError.USER_EMAIL_EXISTS)
         }
 
-        else if (existUserLogin) {
-            throw new BadRequestException(AppError.USER_USERNAME_EXISTS)
+        else if (existUserPhone) {
+            throw new BadRequestException(AppError.USER_PHONE_EXISTS)
         }
 
         dto.password = await this.hashPassword(dto.password);
         await this.userRepository.create({
-            firstName: dto.firstName,
-            userName: dto.userName,
+            first_name: dto.first_name,
+            last_name: dto.last_name,
             email: dto.email,
             password: dto.password,
+            phone: dto.phone,
+            address: dto.address,
+            zip_code: dto.zip_code,
+            country_id: dto.country_id,
+            city_id: dto.city_id,
+            role: dto.role,
         });
         return dto;
     }
