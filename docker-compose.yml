@@ -2,21 +2,20 @@ version: "3.9"
 services:
   postgres:
     image: postgres:13.3
-#    env_file:
-#      - .env
+    env_file:
+     - .env
     environment:
-      POSTGRES_DB: "createx"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres123"
+      POSTGRES_DB: "${DATABASE_NAME}"
+      POSTGRES_USER: "${DATABASE_USERNAME}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-    #  - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
       - ./db:/var/lib/postgresql/data
     ports:
-      - "6432:5432"
+      - "${DATABASE_PORT}:5432"
     restart: unless-stopped
     deploy:
       resources:
         limits:
           cpus: "1"
-          memory: 4G          
+          memory: 4G
