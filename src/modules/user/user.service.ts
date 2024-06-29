@@ -7,38 +7,38 @@ import { CreateUserDTO } from './dto';
 @Injectable()
 export class UserService {
 
-    constructor(@InjectModel(User) private readonly userRepository: typeof User) { }
+  constructor(@InjectModel(User) private readonly userRepository: typeof User) { }
 
-    async hashPassword(password: string | Buffer) {
-        return bcrypt.hash(password, 10);
-    }
+  async hashPassword(password: string | Buffer) {
+    return bcrypt.hash(password, 10);
+  }
 
-    async findUserByEmail(email: string) {
-        return this.userRepository.findOne({ where: { email: email } })
-    }
+  async findUserByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email: email } })
+  }
 
-    async findUserByNumber(phone: string) {
-        return this.userRepository.findOne({ where: { phone: phone } })
-    }
+  async findUserByNumber(phone: string) {
+    return this.userRepository.findOne({ where: { phone: phone } })
+  }
 
-    async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
-        dto.password = await this.hashPassword(dto.password);
-        await this.userRepository.create({
-            first_name: dto.first_name,
-            last_name: dto.last_name,
-            email: dto.email,
-            password: dto.password,
-            phone: dto.phone,
-            address: dto.address,
-            zip_code: dto.zip_code,
-            country_id: dto.country_id,
-            city_id: dto.city_id,
-            role: dto.role,
-        });
-        return dto;
-    }
+  async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
+    dto.password = await this.hashPassword(dto.password);
+    await this.userRepository.create({
+      first_name: dto.first_name,
+      last_name: dto.last_name,
+      email: dto.email,
+      password: dto.password,
+      phone: dto.phone,
+      address: dto.address,
+      zip_code: dto.zip_code,
+      country_id: dto.country_id,
+      city_id: dto.city_id,
+      role: dto.role,
+    });
+    return dto;
+  }
 
-    async getUsers(): Promise<User[]> {
-        return this.userRepository.findAll();
-    }
+  async getUsers(): Promise<User[]> {
+    return this.userRepository.findAll();
+  }
 }

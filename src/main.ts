@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
-async function bootstrap() {
+async function startApp() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get('API_PORT');
@@ -20,7 +20,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(port);
-  console.log(`APP STARTED AT PORT ${port}`)
+  try {
+    await app.listen(port);
+    console.log(`APP STARTED AT PORT ${port}`)
+  } catch (error) {
+    console.log(error)
+  }
+
 }
-bootstrap();
+startApp();

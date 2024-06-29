@@ -1,33 +1,44 @@
 import { IsNumber, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger"
 
 export class CreateUserDTO {
-    @IsString()
-    first_name: string
+  @ApiProperty()
+  @IsString()
+  first_name: string
 
-    @IsString()
-    last_name: string
+  @ApiProperty()
+  @IsString()
+  last_name: string
 
-    @IsString()
-    email: string
+  @ApiProperty()
+  @IsString()
+  email: string
 
-    @IsString()
-    password: string
+  @ApiProperty()
+  @IsString()
+  password: string
 
-    @IsString()
-    phone: string
+  @ApiProperty()
+  @IsString()
+  phone: string
 
-    @IsString()
-    address: string
+  @ApiProperty()
+  @IsString()
+  address: string
 
-    @IsString()
-    zip_code: string
+  @ApiProperty()
+  @IsString()
+  zip_code: string
 
-    @IsNumber()
-    country_id: number
+  @ApiProperty()
+  @IsNumber()
+  country_id: number
 
-    @IsNumber()
-    city_id: number
+  @ApiProperty()
+  @IsNumber()
+  city_id: number
 
-    @IsString()
-    role: string
+  @ApiProperty()
+  @IsString()
+  role: string
 }
