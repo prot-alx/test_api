@@ -42,3 +42,33 @@ export class CreateUserDTO {
   @IsString()
   role: string
 }
+
+export class UpdateUserDTO {
+  @ApiProperty()
+  @IsString()
+  first_name: string
+
+  @ApiProperty()
+  @IsString()
+  last_name: string
+
+  @ApiProperty()
+  @IsString()
+  phone: string
+
+  @ApiProperty()
+  @IsString()
+  address: string
+
+  @ApiProperty()
+  @IsString()
+  zip_code: string
+
+  @ApiProperty()
+  @IsNumber()
+  country_id: number
+
+  @ApiProperty()
+  @IsNumber()
+  city_id: number
+}
