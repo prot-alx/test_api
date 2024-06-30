@@ -4,6 +4,7 @@
 /build
 /db
 /pgdata
+/.vscode
 
 # Logs
 logs
