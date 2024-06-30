@@ -39,9 +39,11 @@ export class UserService {
   }
 
   async getUsers(): Promise<User[]> {
-    return this.userRepository.findAll();
+    return this.userRepository.findAll({
+      attributes: {exclude: ['password']}
+    });
   }
-
+  
   async publicUser(email: string) {
     return this.userRepository.findOne({
       where: {email},
