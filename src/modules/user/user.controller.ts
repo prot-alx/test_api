@@ -21,17 +21,17 @@ export class GetProfile {
   constructor(private readonly userService: UserService) { }
 
   //GET PROFILE
-  @ApiTags('Profile options')
+  @ApiTags('Profile')
   @ApiResponse({ status: 200, type: CreateUserDTO })
   @UseGuards(JwtAuthGuard)
   @Get()
-  getUser(@Req() request: any) {
+  getUser(@Req() request: any): Promise<CreateUserDTO> {
     const user = request.user;
     return this.userService.publicUser(user.email);
   }
 
   //UPDATE PROFILE
-  @ApiTags('Profile options')
+  @ApiTags('Profile')
   @ApiResponse({ status: 200, type: UpdateUserDTO })
   @UseGuards(JwtAuthGuard)
   @Patch()
@@ -41,10 +41,10 @@ export class GetProfile {
   }
 
   //DELETE PROFILE
-  @ApiTags('Profile options')
+  @ApiTags('Profile')
   @UseGuards(JwtAuthGuard)
   @Delete()
-  deleteUser(@Req() request: any) {
+  deleteUser(@Req() request: any): Promise<boolean>  {
     const user = request.user;
     return this.userService.deleteUser(user.email);
   }
