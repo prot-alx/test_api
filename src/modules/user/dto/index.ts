@@ -1,14 +1,16 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDTO {
   @ApiProperty()
   @IsString()
-  first_name: string;
+  @IsOptional()
+  first_name: string = 'None';
 
   @ApiProperty()
   @IsString()
-  last_name: string;
+  @IsOptional()
+  last_name: string = 'None';
 
   @ApiProperty()
   @IsString()
@@ -24,23 +26,32 @@ export class CreateUserDTO {
 
   @ApiProperty()
   @IsString()
-  address: string;
+  @IsOptional()
+  address: string = 'None';
 
   @ApiProperty()
   @IsString()
-  zip_code: string;
+  @IsOptional()
+  zip_code: string = 'None';
 
   @ApiProperty()
   @IsNumber()
-  country_id: number;
+  @IsOptional()
+  country_id: number = 1;
 
   @ApiProperty()
   @IsNumber()
-  city_id: number;
+  @IsOptional()
+  city_id: number = 1;
 
   @ApiProperty()
   @IsString()
-  role: string;
+  @IsOptional()
+  role: string = 'user';
+
+  constructor(partial: Partial<CreateUserDTO> = {}) {
+    Object.assign(this, partial);
+  }
 }
 
 export class UpdateUserDTO {

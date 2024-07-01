@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import * as bcrypt from 'bcrypt';
+import { validate } from 'class-validator';
 import { CreateUserDTO, UpdateUserDTO } from './dto';
 
 @Injectable()
@@ -22,21 +23,29 @@ export class UserService {
     return this.userRepository.findOne({ where: { phone: phone } });
   }
 
-  async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
-    dto.password = await this.hashPassword(dto.password);
-    await this.userRepository.create({
-      first_name: dto.first_name,
-      last_name: dto.last_name,
-      email: dto.email,
-      password: dto.password,
-      phone: dto.phone,
-      address: dto.address,
-      zip_code: dto.zip_code,
-      country_id: dto.country_id,
-      city_id: dto.city_id,
-      role: dto.role,
+  async createUser(createUserDto: any): Promise<User> {
+    const userDto = new CreateUserDTO(createUserDto);
+    const errors = await validate(userDto);
+    if (errors.length > 0) {
+      throw new BadRequestException('Validation failed');
+    }
+
+    userDto.password = await this.hashPassword(userDto.password);
+
+    const user = await this.userRepository.create({
+      first_name: userDto.first_name,
+      last_name: userDto.last_name,
+      email: userDto.email,
+      password: userDto.password,
+      phone: userDto.phone,
+      address: userDto.address,
+      zip_code: userDto.zip_code,
+      country_id: userDto.country_id,
+      city_id: userDto.city_id,
+      role: userDto.role,
     });
-    return dto;
+
+    return user;
   }
 
   async getUsers(): Promise<User[]> {
@@ -57,7 +66,7 @@ export class UserService {
     return dto;
   }
 
-  async deleteUser(email: string) {
+  async deleteUser(email: string): Promise<boolean> {
     await this.userRepository.destroy({ where: { email } });
     return true;
   }

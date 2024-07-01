@@ -54,7 +54,7 @@ export class GetProfile {
   @ApiTags('Profile')
   @UseGuards(JwtAuthGuard)
   @Delete()
-  deleteUser(@Req() request: any) {
+  deleteUser(@Req() request: any): Promise<boolean> {
     const user = request.user;
     return this.userService.deleteUser(user.email);
   }
