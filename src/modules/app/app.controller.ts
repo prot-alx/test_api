@@ -8,5 +8,4 @@ export class AppController {
   getStarted(): string {
     return this.appService.getStarted();
   }
-
 }

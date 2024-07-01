@@ -37,5 +37,4 @@ import { TokenModule } from '../token/token.module';
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}

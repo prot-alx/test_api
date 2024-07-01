@@ -6,19 +6,20 @@ import { CreateUserDTO, UpdateUserDTO } from './dto';
 
 @Injectable()
 export class UserService {
-
-  constructor(@InjectModel(User) private readonly userRepository: typeof User) { }
+  constructor(
+    @InjectModel(User) private readonly userRepository: typeof User,
+  ) {}
 
   async hashPassword(password: string | Buffer) {
     return bcrypt.hash(password, 10);
   }
 
   async findUserByEmail(email: string) {
-    return this.userRepository.findOne({ where: { email: email } })
+    return this.userRepository.findOne({ where: { email: email } });
   }
 
   async findUserByNumber(phone: string) {
-    return this.userRepository.findOne({ where: { phone: phone } })
+    return this.userRepository.findOne({ where: { phone: phone } });
   }
 
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
@@ -40,24 +41,24 @@ export class UserService {
 
   async getUsers(): Promise<User[]> {
     return this.userRepository.findAll({
-      attributes: {exclude: ['password']}
+      attributes: { exclude: ['password'] },
     });
   }
-  
+
   async publicUser(email: string) {
     return this.userRepository.findOne({
-      where: {email},
-      attributes: {exclude: ['password']}
-    })
+      where: { email },
+      attributes: { exclude: ['password'] },
+    });
   }
 
-  async updateUser(email: string, dto: UpdateUserDTO): Promise <UpdateUserDTO> {
-    await this.userRepository.update(dto, {where: {email: email}});
+  async updateUser(email: string, dto: UpdateUserDTO): Promise<UpdateUserDTO> {
+    await this.userRepository.update(dto, { where: { email: email } });
     return dto;
   }
 
   async deleteUser(email: string) {
-    await this.userRepository.destroy({where: {email}});
+    await this.userRepository.destroy({ where: { email } });
     return true;
   }
 }

@@ -5,5 +5,4 @@ export class AppService {
   getStarted(): string {
     return 'APP STARTED!';
   }
-  
 }

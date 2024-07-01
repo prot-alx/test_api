@@ -10,5 +10,4 @@ import { User } from './models/user.model';
   providers: [UserService],
   exports: [UserService],
 })
-
 export class UserModule {}

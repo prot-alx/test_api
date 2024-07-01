@@ -12,41 +12,41 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
-  ) { }
+  ) {}
 
   async registerUsers(dto: CreateUserDTO): Promise<CreateUserDTO> {
-    const existUserPhone = await this.userService.findUserByNumber(dto.phone)
-    const existUserEmail = await this.userService.findUserByEmail(dto.email)
+    const existUserPhone = await this.userService.findUserByNumber(dto.phone);
+    const existUserEmail = await this.userService.findUserByEmail(dto.email);
 
     if (existUserEmail) {
-      throw new BadRequestException(AppError.USER_EMAIL_EXISTS)
+      throw new BadRequestException(AppError.USER_EMAIL_EXISTS);
+    } else if (existUserPhone) {
+      throw new BadRequestException(AppError.USER_PHONE_EXISTS);
     }
 
-    else if (existUserPhone) {
-      throw new BadRequestException(AppError.USER_PHONE_EXISTS)
-    }
-
-    return this.userService.createUser(dto)
+    return this.userService.createUser(dto);
   }
 
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
-    const existUser = await this.userService.findUserByEmail(dto.email)
-    if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXISTS)
+    const existUser = await this.userService.findUserByEmail(dto.email);
+    if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXISTS);
 
-
-    const validatePassword = await bcrypt.compare(dto.password, existUser.password)
-    if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA)
+    const validatePassword = await bcrypt.compare(
+      dto.password,
+      existUser.password,
+    );
+    if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA);
 
     const userData = {
       first_name: existUser.first_name,
       last_name: existUser.last_name,
       email: existUser.email,
-    }
+    };
 
     const token = await this.tokenService.generateJwtToken(userData);
-    
-    const user = await this.userService.publicUser(dto.email)
 
-    return {...user, token};
+    const user = await this.userService.publicUser(dto.email);
+
+    return { ...user, token };
   }
 }

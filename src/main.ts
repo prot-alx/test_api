@@ -11,21 +11,20 @@ async function startApp() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-  .setTitle('Lesson API')
-  .setDescription('This API for the lesson')
-  .setVersion('1.0')
-  .addTag('API')
-  .build();
+    .setTitle('Lesson API')
+    .setDescription('This API for the lesson')
+    .setVersion('1.0')
+    .addTag('API')
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
   try {
     await app.listen(port);
-    console.log(`APP STARTED AT PORT ${port}`)
+    console.log(`APP STARTED AT PORT ${port}`);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-
 }
 startApp();

@@ -1,74 +1,74 @@
-import { IsNumber, IsString } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger"
+import { IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDTO {
   @ApiProperty()
   @IsString()
-  first_name: string
+  first_name: string;
 
   @ApiProperty()
   @IsString()
-  last_name: string
+  last_name: string;
 
   @ApiProperty()
   @IsString()
-  email: string
+  email: string;
 
   @ApiProperty()
   @IsString()
-  password: string
+  password: string;
 
   @ApiProperty()
   @IsString()
-  phone: string
+  phone: string;
 
   @ApiProperty()
   @IsString()
-  address: string
+  address: string;
 
   @ApiProperty()
   @IsString()
-  zip_code: string
+  zip_code: string;
 
   @ApiProperty()
   @IsNumber()
-  country_id: number
+  country_id: number;
 
   @ApiProperty()
   @IsNumber()
-  city_id: number
+  city_id: number;
 
   @ApiProperty()
   @IsString()
-  role: string
+  role: string;
 }
 
 export class UpdateUserDTO {
   @ApiProperty()
   @IsString()
-  first_name: string
+  first_name: string;
 
   @ApiProperty()
   @IsString()
-  last_name: string
+  last_name: string;
 
   @ApiProperty()
   @IsString()
-  phone: string
+  phone: string;
 
   @ApiProperty()
   @IsString()
-  address: string
+  address: string;
 
   @ApiProperty()
   @IsString()
-  zip_code: string
+  zip_code: string;
 
   @ApiProperty()
   @IsNumber()
-  country_id: number
+  country_id: number;
 
   @ApiProperty()
   @IsNumber()
-  city_id: number
+  city_id: number;
 }

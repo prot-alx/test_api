@@ -8,6 +8,6 @@ import { JwtStrategy } from 'src/strategy';
 @Module({
   imports: [UserModule, TokenModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy]
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

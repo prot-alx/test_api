@@ -1,24 +1,24 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsString } from "class-validator"
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class AuthUserResponse {
   @ApiProperty()
   @IsString()
-  first_name: string
+  first_name: string;
 
   @ApiProperty()
   @IsString()
-  last_name: string
+  last_name: string;
 
   @ApiProperty()
   @IsString()
-  email: string
+  email: string;
 
   @ApiProperty()
   @IsString()
-  password: string
+  password: string;
 
   @ApiProperty()
   @IsString()
-  token: string
+  token: string;
 }
