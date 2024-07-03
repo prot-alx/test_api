@@ -4,6 +4,6 @@ import { ColorsService } from './colors.service';
 
 @Module({
   controllers: [ColorsController],
-  providers: [ColorsService]
+  providers: [ColorsService],
 })
 export class ColorsModule {}
