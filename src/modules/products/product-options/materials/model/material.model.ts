@@ -1,7 +1,10 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table
-export class Material extends Model {
-  @Column
+export class Material extends Model<Material> {
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   name: string;
 }

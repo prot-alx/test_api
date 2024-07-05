@@ -1,10 +1,14 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Table, Model, ForeignKey, Column } from 'sequelize-typescript';
+import { Product } from '../../../models/product.model';
+import { Color } from '../../colors/model/color.model';
 
 @Table
-export class ProductColor extends Model {
+export class ProductColor extends Model<ProductColor> {
+  @ForeignKey(() => Product)
   @Column
-  product_id: number;
+  productId: number;
 
+  @ForeignKey(() => Color)
   @Column
-  color_id: number;
+  colorId: number;
 }
