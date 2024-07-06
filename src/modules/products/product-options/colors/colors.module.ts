@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ColorsController } from './colors.controller';
-import { ColorsService } from './colors.service';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ColorService } from './colors.service';
+import { ColorController } from './colors.controller';
+import { Color } from './model/color.model';
 
 @Module({
-  controllers: [ColorsController],
-  providers: [ColorsService],
+  imports: [SequelizeModule.forFeature([Color])],
+  providers: [ColorService],
+  controllers: [ColorController],
 })
-export class ColorsModule {}
+export class ColorModule {}

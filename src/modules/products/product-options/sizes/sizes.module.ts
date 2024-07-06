@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { SizesController } from './sizes.controller';
-import { SizesService } from './sizes.service';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { SizeService } from './sizes.service';
+import { SizeController } from './sizes.controller';
+import { Size } from './model/size.model';
 
 @Module({
-  controllers: [SizesController],
-  providers: [SizesService],
+  imports: [SequelizeModule.forFeature([Size])],
+  providers: [SizeService],
+  controllers: [SizeController],
 })
-export class SizesModule {}
+export class SizeModule {}

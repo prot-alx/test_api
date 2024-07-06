@@ -13,4 +13,8 @@ export class ProductService {
   async create(createProductDto: CreateProductDto): Promise<Product> {
     return this.productModel.create(createProductDto);
   }
+
+  async findAll(): Promise<Product[]> {
+    return this.productModel.findAll();
+  }
 }

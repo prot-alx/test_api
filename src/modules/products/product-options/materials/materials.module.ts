@@ -1,9 +1,13 @@
+// material.module.ts
 import { Module } from '@nestjs/common';
-import { MaterialsController } from './materials.controller';
-import { MaterialsService } from './materials.service';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { MaterialService } from './materials.service';
+import { MaterialController } from './materials.controller';
+import { Material } from './model/material.model';
 
 @Module({
-  controllers: [MaterialsController],
-  providers: [MaterialsService],
+  imports: [SequelizeModule.forFeature([Material])],
+  providers: [MaterialService],
+  controllers: [MaterialController],
 })
-export class MaterialsModule {}
+export class MaterialModule {}

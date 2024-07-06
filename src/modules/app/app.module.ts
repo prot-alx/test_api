@@ -19,6 +19,12 @@ import { Clothes } from '../products/product-options/clothes/model/clothes.model
 import { Material } from '../products/product-options/materials/model/material.model';
 import { Brand } from '../products/product-options/brands/model/brand.model';
 import { ProductModule } from '../products/products.module';
+import { ClothesModule } from '../products/product-options/clothes/clothes.module';
+import { MaterialModule } from '../products/product-options/materials/materials.module';
+import { BrandModule } from '../products/product-options/brands/brands.module';
+import { SizeModule } from '../products/product-options/sizes/sizes.module';
+import { ColorModule } from '../products/product-options/colors/colors.module';
+import { CategoryModule } from '../products/product-options/categories/category.module';
 
 @Module({
   imports: [
@@ -57,6 +63,12 @@ import { ProductModule } from '../products/products.module';
     AuthModule,
     TokenModule,
     ProductModule,
+    ClothesModule,
+    MaterialModule,
+    BrandModule,
+    SizeModule,
+    ColorModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,5 +8,5 @@ export class ColorDTO {
 
   @ApiProperty()
   @IsString()
-  color_code: string;
+  colorCode: string;
 }
