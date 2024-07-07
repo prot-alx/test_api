@@ -6,14 +6,14 @@ import { ConfigService } from '@nestjs/config';
 export class TokenService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly ConfigService: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   async generateJwtToken(user: any) {
     const payload = { user };
     return this.jwtService.sign(payload, {
-      secret: this.ConfigService.get('SECRET_JWT'),
-      expiresIn: this.ConfigService.get('EXPIRE_JWT'),
+      secret: this.configService.get('SECRET_JWT'),
+      expiresIn: this.configService.get('EXPIRE_JWT'),
     });
   }
 }
