@@ -12,11 +12,17 @@ import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { User } from './models/user.model';
 import { JwtAuthGuard } from 'src/guards/jwt-guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/guards/roles.decorator';
 
 @Controller('profile')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  //GET ALL PROFILES via admin only
+  @ApiTags('Profile')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('all')
   async findAll(): Promise<User[]> {
     return this.userService.findAll();

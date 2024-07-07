@@ -1,3 +1,4 @@
+// auth.service.ts
 import { TokenService } from './../token/token.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../users/user.service';
@@ -26,9 +27,12 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    const userToCreate: CreateUserDTO = {
+    type CreateUserWithRoleDTO = CreateUserDTO & { role: string };
+
+    const userToCreate: CreateUserWithRoleDTO = {
       ...dto,
       password: hashedPassword,
+      role: 'user',
     };
 
     return this.userService.createUser(userToCreate);
@@ -48,6 +52,7 @@ export class AuthService {
       first_name: existUser.first_name,
       last_name: existUser.last_name,
       email: existUser.email,
+      role: existUser.role,
     };
 
     const token = await this.tokenService.generateJwtToken(userData);

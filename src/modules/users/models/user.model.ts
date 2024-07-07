@@ -5,6 +5,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  Default,
 } from 'sequelize-typescript';
 import { Country } from '../../countries/model/countries.model';
 import { City } from '../../cities/model/cities.model';
@@ -18,12 +19,6 @@ import { RecentlyViewed } from '../../recently-viewed/model/recently-viewed.mode
 @Table
 export class User extends Model<User> {
   @Column
-  first_name: string;
-
-  @Column
-  last_name: string;
-
-  @Column
   email: string;
 
   @Column
@@ -32,13 +27,24 @@ export class User extends Model<User> {
   @Column
   phone: string;
 
+  @Default('Unknown')
+  @Column
+  first_name: string;
+
+  @Default('Unknown')
+  @Column
+  last_name: string;
+
+  @Default('Unknown')
   @Column
   address: string;
 
+  @Default('00000')
   @Column
   zip_code: string;
 
   @ForeignKey(() => Country)
+  @Default(1)
   @Column
   country_id: number;
 
@@ -46,12 +52,14 @@ export class User extends Model<User> {
   country: Country;
 
   @ForeignKey(() => City)
+  @Default(1)
   @Column
   city_id: number;
 
   @BelongsTo(() => City)
   city: City;
 
+  @Default('user')
   @Column
   role: string;
 

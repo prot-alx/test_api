@@ -14,15 +14,6 @@ export class UserService {
     return await this.userModel.create(createUserDTO);
   }
 
-  async updateUser(id: number, updateUserDTO: UpdateUserDTO): Promise<User> {
-    const user = await this.userModel.findByPk(id);
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-    await user.update(updateUserDTO);
-    return user.reload();
-  }
-
   async deleteUser(email: string): Promise<boolean> {
     await this.userModel.destroy({ where: { email } });
     return true;
@@ -53,5 +44,10 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     return this.userModel.findAll();
+  }
+
+  async updateUser(email: string, dto: UpdateUserDTO): Promise<UpdateUserDTO> {
+    await this.userModel.update(dto, { where: { email: email } });
+    return dto;
   }
 }

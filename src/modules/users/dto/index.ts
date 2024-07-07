@@ -4,16 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateUserDTO {
   @ApiProperty()
   @IsString()
-  @IsOptional()
-  first_name: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  last_name: string;
-
-  @ApiProperty()
-  @IsString()
   email: string;
 
   @ApiProperty()
@@ -27,62 +17,67 @@ export class CreateUserDTO {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  address: string;
+  first_name?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  zip_code: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  country_id: number;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  city_id: number;
+  last_name?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  role: string;
+  address?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  zip_code?: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  country_id?: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  city_id?: number;
 }
 
 export class UpdateUserDTO {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  first_name: string;
+  first_name?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  last_name: string;
+  last_name?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  phone: string;
+  phone?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  address: string;
+  address?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  zip_code: string;
+  zip_code?: string;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  country_id: number;
+  country_id?: number;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  city_id: number;
+  city_id?: number;
 }
