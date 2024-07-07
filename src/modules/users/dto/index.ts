@@ -85,9 +85,4 @@ export class UpdateUserDTO {
   @IsNumber()
   @IsOptional()
   city_id: number;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  role: string;
 }

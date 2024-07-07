@@ -53,4 +53,8 @@ export class UserService {
       attributes: { exclude: ['password'] },
     });
   }
+
+  async findAll(): Promise<User[]> {
+    return this.userModel.findAll();
+  }
 }

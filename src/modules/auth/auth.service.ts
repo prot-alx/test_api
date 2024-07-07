@@ -24,7 +24,14 @@ export class AuthService {
       throw new BadRequestException(AppError.USER_PHONE_EXISTS);
     }
 
-    return this.userService.createUser(dto);
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    const userToCreate: CreateUserDTO = {
+      ...dto,
+      password: hashedPassword,
+    };
+
+    return this.userService.createUser(userToCreate);
   }
 
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
