@@ -1,50 +1,56 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsBoolean,
-  IsString,
-  IsDecimal,
-} from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsArray } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateProductDto {
-  @IsNotEmpty()
+export class CreateProductDTO {
+  @ApiProperty()
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @ApiProperty()
   @IsNumber()
   price: number;
 
-  @IsOptional()
+  @ApiProperty()
   @IsString()
-  image?: string;
+  image: string;
 
-  @IsOptional()
+  @ApiProperty()
   @IsNumber()
-  rating?: number;
+  rating: number;
 
-  @IsNotEmpty()
+  @ApiProperty()
   @IsNumber()
   clothesId: number;
 
-  @IsNotEmpty()
+  @ApiProperty()
   @IsNumber()
   materialId: number;
 
-  @IsNotEmpty()
+  @ApiProperty()
   @IsNumber()
   brandId: number;
 
-  @IsOptional()
+  @ApiProperty()
   @IsBoolean()
-  isSale?: boolean;
+  isSale: boolean;
 
-  @IsOptional()
-  @IsDecimal()
-  discount?: number;
+  @ApiProperty()
+  @IsNumber()
+  discount: number;
 
-  @IsOptional()
-  @IsDecimal()
-  salePrice?: number;
+  @ApiProperty()
+  @IsNumber()
+  salePrice: number;
+
+  @ApiProperty()
+  @IsArray()
+  categories: number[];
+
+  @ApiProperty()
+  @IsArray()
+  colors: number[];
+
+  @ApiProperty()
+  @IsArray()
+  sizes: number[];
 }

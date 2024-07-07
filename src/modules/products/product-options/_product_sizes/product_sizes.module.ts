@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ProductSizesController } from './product_sizes.controller';
-import { ProductSizesService } from './product_sizes.service';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ProductSizeController } from './product_sizes.controller';
+import { ProductSizeService } from './product_sizes.service';
+import { ProductSize } from './model/product_size.model';
+import { Product } from '../../models/product.model';
+import { Size } from '../../product-options/sizes/model/size.model';
 
 @Module({
-  controllers: [ProductSizesController],
-  providers: [ProductSizesService],
+  imports: [SequelizeModule.forFeature([ProductSize, Product, Size])],
+  controllers: [ProductSizeController],
+  providers: [ProductSizeService],
 })
-export class ProductSizesModule {}
+export class ProductSizeModule {}

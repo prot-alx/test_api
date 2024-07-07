@@ -8,23 +8,28 @@ import configurations from '../../configurations';
 import { User } from '../users/models/user.model';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
-import { Color } from '../products/product-options/colors/model/color.model';
-import { Product } from '../products/models/product.model';
-import { Size } from '../products/product-options/sizes/model/size.model';
-import { Category } from '../products/product-options/categories/model/category.model';
-import { ProductColor } from '../products/product-options/_product_colors/model/product_color.model';
-import { ProductSize } from '../products/product-options/_product_sizes/model/product_size.model';
-import { ProductCategory } from '../products/product-options/_product_categories/model/product_category.model';
-import { Clothes } from '../products/product-options/clothes/model/clothes.model';
-import { Material } from '../products/product-options/materials/model/material.model';
-import { Brand } from '../products/product-options/brands/model/brand.model';
-import { ProductModule } from '../products/products.module';
-import { ClothesModule } from '../products/product-options/clothes/clothes.module';
-import { MaterialModule } from '../products/product-options/materials/materials.module';
-import { BrandModule } from '../products/product-options/brands/brands.module';
-import { SizeModule } from '../products/product-options/sizes/sizes.module';
-import { ColorModule } from '../products/product-options/colors/colors.module';
-import { CategoryModule } from '../products/product-options/categories/category.module';
+import {
+  Color,
+  Product,
+  Size,
+  Category,
+  ProductColor,
+  ProductSize,
+  ProductCategory,
+  Clothes,
+  Material,
+  Brand,
+  ProductModule,
+  ClothesModule,
+  MaterialModule,
+  BrandModule,
+  SizeModule,
+  ColorModule,
+  CategoryModule,
+  ProductCategoryModule,
+  ProductColorModule,
+  ProductSizeModule,
+} from '../products/index';
 
 @Module({
   imports: [
@@ -69,6 +74,9 @@ import { CategoryModule } from '../products/product-options/categories/category.
     SizeModule,
     ColorModule,
     CategoryModule,
+    ProductCategoryModule,
+    ProductColorModule,
+    ProductSizeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

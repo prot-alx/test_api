@@ -1,22 +1,23 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProductService } from './products.service';
-import { CreateProductDto } from './dto';
-import { Product } from './models/product.model';
-import { ApiTags } from '@nestjs/swagger';
+import { CreateProductDTO } from './dto';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @ApiTags('Products')
   @Post()
-  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return this.productService.create(createProductDto);
+  async create(@Body() createProductDTO: CreateProductDTO) {
+    return this.productService.create(createProductDTO);
   }
 
-  @ApiTags('Products')
   @Get()
-  async findAll(): Promise<Product[]> {
+  async findAll() {
     return this.productService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return this.productService.findOne(id);
   }
 }
