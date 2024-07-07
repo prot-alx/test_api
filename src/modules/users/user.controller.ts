@@ -1,61 +1,39 @@
 import {
-  Body,
   Controller,
-  Delete,
+  Post,
+  Body,
   Get,
-  Patch,
-  Req,
-  UseGuards,
+  Param,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO, UpdateUserDTO } from './dto';
-import { JwtAuthGuard } from 'src/guards/jwt-guard';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  //Get all users ---надо сделать так, чтоб действие было доступно только из под админа
-  @Get()
-  getUsers() {
-    return this.userService.getUsers();
-  }
-}
-
-@Controller('profile')
-export class GetProfile {
-  constructor(private readonly userService: UserService) {}
-
-  //GET PROFILE
-  @ApiTags('Profile')
-  @ApiResponse({ status: 200, type: CreateUserDTO })
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  getUser(@Req() request: any) {
-    const user = request.user;
-    return this.userService.publicUser(user.email);
+  @Post()
+  async createUser(@Body() createUserDTO: CreateUserDTO) {
+    return this.userService.createUser(createUserDTO);
   }
 
-  //UPDATE PROFILE
-  @ApiTags('Profile')
-  @ApiResponse({ status: 200, type: UpdateUserDTO })
-  @UseGuards(JwtAuthGuard)
-  @Patch()
-  updateUser(
-    @Body() updateDTO: UpdateUserDTO,
-    @Req() request: any,
-  ): Promise<UpdateUserDTO> {
-    const user = request.user;
-    return this.userService.updateUser(user.email, updateDTO);
+  @Get(':id')
+  async getUserById(@Param('id') id: number) {
+    return this.userService.findUserById(id);
   }
 
-  //DELETE PROFILE
-  @ApiTags('Profile')
-  @UseGuards(JwtAuthGuard)
-  @Delete()
-  deleteUser(@Req() request: any): Promise<boolean> {
-    const user = request.user;
-    return this.userService.deleteUser(user.email);
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: number,
+    @Body() updateUserDTO: UpdateUserDTO,
+  ) {
+    return this.userService.updateUser(id, updateUserDTO);
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number) {
+    return this.userService.deleteUser(id);
   }
 }

@@ -1,73 +1,56 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
-import * as bcrypt from 'bcrypt';
-import { validate } from 'class-validator';
 import { CreateUserDTO, UpdateUserDTO } from './dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User) private readonly userRepository: typeof User,
+    @InjectModel(User)
+    private readonly userModel: typeof User,
   ) {}
 
-  async hashPassword(password: string | Buffer) {
-    return bcrypt.hash(password, 10);
+  async createUser(createUserDTO: CreateUserDTO): Promise<User> {
+    return await this.userModel.create(createUserDTO);
   }
 
-  async findUserByEmail(email: string) {
-    return this.userRepository.findOne({ where: { email: email } });
-  }
-
-  async findUserByNumber(phone: string) {
-    return this.userRepository.findOne({ where: { phone: phone } });
-  }
-
-  async createUser(createUserDto: any): Promise<User> {
-    const userDto = new CreateUserDTO(createUserDto);
-    const errors = await validate(userDto);
-    if (errors.length > 0) {
-      throw new BadRequestException('Validation failed');
+  async updateUser(id: number, updateUserDTO: UpdateUserDTO): Promise<User> {
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
+    await user.update(updateUserDTO);
+    return user.reload();
+  }
 
-    userDto.password = await this.hashPassword(userDto.password);
+  async deleteUser(id: number): Promise<void> {
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    await user.destroy();
+  }
 
-    const user = await this.userRepository.create({
-      first_name: userDto.first_name,
-      last_name: userDto.last_name,
-      email: userDto.email,
-      password: userDto.password,
-      phone: userDto.phone,
-      address: userDto.address,
-      zip_code: userDto.zip_code,
-      country_id: userDto.country_id,
-      city_id: userDto.city_id,
-      role: userDto.role,
-    });
-
+  async findUserById(id: number): Promise<User> {
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
     return user;
   }
 
-  async getUsers(): Promise<User[]> {
-    return this.userRepository.findAll({
-      attributes: { exclude: ['password'] },
-    });
+  async findUserByNumber(phone: string): Promise<User | null> {
+    return await this.userModel.findOne({ where: { phone } });
+  }
+
+  async findUserByEmail(email: string): Promise<User | null> {
+    return await this.userModel.findOne({ where: { email } });
   }
 
   async publicUser(email: string) {
-    return this.userRepository.findOne({
+    return this.userModel.findOne({
       where: { email },
       attributes: { exclude: ['password'] },
     });
-  }
-
-  async updateUser(email: string, dto: UpdateUserDTO): Promise<UpdateUserDTO> {
-    await this.userRepository.update(dto, { where: { email: email } });
-    return dto;
-  }
-
-  async deleteUser(email: string): Promise<boolean> {
-    await this.userRepository.destroy({ where: { email } });
-    return true;
   }
 }

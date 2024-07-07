@@ -1,16 +1,16 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDTO {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  first_name: string = 'None';
+  first_name: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  last_name: string = 'None';
+  last_name: string;
 
   @ApiProperty()
   @IsString()
@@ -27,59 +27,67 @@ export class CreateUserDTO {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  address: string = 'None';
+  address: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  zip_code: string = 'None';
+  zip_code: string;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  country_id: number = 1;
+  country_id: number;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  city_id: number = 1;
+  city_id: number;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  role: string = 'user';
-
-  constructor(partial: Partial<CreateUserDTO> = {}) {
-    Object.assign(this, partial);
-  }
+  role: string;
 }
 
 export class UpdateUserDTO {
   @ApiProperty()
   @IsString()
+  @IsOptional()
   first_name: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   last_name: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   phone: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   address: string;
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   zip_code: string;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   country_id: number;
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   city_id: number;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  role: string;
 }

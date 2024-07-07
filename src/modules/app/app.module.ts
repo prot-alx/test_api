@@ -29,8 +29,27 @@ import {
   ProductCategoryModule,
   ProductColorModule,
   ProductSizeModule,
-} from '../products/index';
-
+  CityModule,
+  CountryModule,
+  OrderProductModule,
+  OrderStatusModule,
+  OrderModule,
+  ProductInCartModule,
+  ProductInWishlistModule,
+  RecentlyViewedModule,
+  ReviewLikeModule,
+  ReviewModule,
+} from '../index';
+import { City } from '../cities/model/cities.model';
+import { Country } from '../countries/model/countries.model';
+import { OrderProduct } from '../order-products/model/order-products.model';
+import { OrderStatus } from '../order-statuses/model/order-statuses.model';
+import { Order } from '../orders/model/orders.model';
+import { ProductInCart } from '../products-in-cart/model/products-in-cart.model';
+import { ProductInWishlist } from '../products-in-wishlist/model/products-in-wishlist.model';
+import { RecentlyViewed } from '../recently-viewed/model/recently-viewed.model';
+import { ReviewLike } from '../review-likes/model/review-likes.model';
+import { Review } from '../reviews/model/reviews.model';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -49,6 +68,7 @@ import {
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadModels: true,
         synchronize: true,
+        logging: (msg) => console.log(msg),
         models: [
           User,
           Color,
@@ -61,6 +81,16 @@ import {
           Clothes,
           Material,
           Brand,
+          City,
+          Country,
+          OrderProduct,
+          OrderStatus,
+          Order,
+          ProductInCart,
+          ProductInWishlist,
+          RecentlyViewed,
+          ReviewLike,
+          Review,
         ],
       }),
     }),
@@ -77,6 +107,16 @@ import {
     ProductCategoryModule,
     ProductColorModule,
     ProductSizeModule,
+    CityModule,
+    CountryModule,
+    OrderProductModule,
+    OrderStatusModule,
+    OrderModule,
+    ProductInCartModule,
+    ProductInWishlistModule,
+    RecentlyViewedModule,
+    ReviewLikeModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
