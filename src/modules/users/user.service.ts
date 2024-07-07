@@ -23,12 +23,9 @@ export class UserService {
     return user.reload();
   }
 
-  async deleteUser(id: number): Promise<void> {
-    const user = await this.userModel.findByPk(id);
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-    await user.destroy();
+  async deleteUser(email: string): Promise<boolean> {
+    await this.userModel.destroy({ where: { email } });
+    return true;
   }
 
   async findUserById(id: number): Promise<User> {

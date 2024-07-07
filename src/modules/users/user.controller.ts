@@ -1,32 +1,56 @@
-import { Controller, Body, Get, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Get,
+  Delete,
+  Patch,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { UpdateUserDTO } from './dto';
+import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { User } from './models/user.model';
+import { JwtAuthGuard } from 'src/guards/jwt-guard';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('users')
+@Controller('profile')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
+  @Get('all')
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  async getUserById(@Param('id') id: number) {
-    return this.userService.findUserById(id);
+  //GET PROFILE
+  @ApiTags('Profile')
+  @ApiResponse({ status: 200, type: CreateUserDTO })
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  getUser(@Req() request: any) {
+    const user = request.user;
+    return this.userService.publicUser(user.email);
   }
 
-  @Put(':id')
-  async updateUser(
-    @Param('id') id: number,
-    @Body() updateUserDTO: UpdateUserDTO,
-  ) {
-    return this.userService.updateUser(id, updateUserDTO);
+  //UPDATE PROFILE
+  @ApiTags('Profile')
+  @ApiResponse({ status: 200, type: UpdateUserDTO })
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  updateUser(
+    @Body() updateDTO: UpdateUserDTO,
+    @Req() request: any,
+  ): Promise<UpdateUserDTO> {
+    const user = request.user;
+    return this.userService.updateUser(user.email, updateDTO);
   }
 
-  @Delete(':id')
-  async deleteUser(@Param('id') id: number) {
-    return this.userService.deleteUser(id);
+  //DELETE PROFILE
+  @ApiTags('Profile')
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  deleteUser(@Req() request: any): Promise<boolean> {
+    const user = request.user;
+    return this.userService.deleteUser(user.email);
   }
 }
