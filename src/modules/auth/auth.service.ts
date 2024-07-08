@@ -49,6 +49,7 @@ export class AuthService {
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA);
 
     const userData = {
+      id: existUser.id,
       first_name: existUser.first_name,
       last_name: existUser.last_name,
       email: existUser.email,

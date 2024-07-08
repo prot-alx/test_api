@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ProductInCart } from './model/products-in-cart.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { ProductInCart } from '../products-in-cart/model/products-in-cart.model';
 import { CreateProductInCartDTO } from './dto';
 
 @Injectable()

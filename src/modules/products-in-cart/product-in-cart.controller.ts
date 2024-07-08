@@ -23,13 +23,13 @@ export class ProductInCartController {
     @Req() req,
     @Body() dto: CreateProductInCartDTO,
   ): Promise<ProductInCart> {
-    return this.productInCartService.createProductInCart(req.user.id, dto);
+    return this.productInCartService.createProductInCart(req.user.userId, dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async getUserCart(@Req() req): Promise<ProductInCart[]> {
-    return this.productInCartService.findUserCart(req.user.id);
+    return this.productInCartService.findUserCart(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -39,7 +39,7 @@ export class ProductInCartController {
     @Param('productId') productId: number,
   ): Promise<ProductInCart> {
     return this.productInCartService.removeProductFromCart(
-      req.user.id,
+      req.user.userId,
       productId,
     );
   }

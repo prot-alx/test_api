@@ -10,7 +10,7 @@ export class TokenService {
   ) {}
 
   async generateJwtToken(user: any) {
-    const payload = { email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>('SECRET_JWT'),
       expiresIn: this.configService.get<string | number>('EXPIRE_JWT'),
