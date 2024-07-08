@@ -10,15 +10,21 @@ export class ProductInCartService {
     private readonly productInCartModel: typeof ProductInCart,
   ) {}
 
-  async createProductInCart(userId: number, dto: CreateProductInCartDTO) {
+  async createProductInCart(
+    userId: number,
+    dto: CreateProductInCartDTO,
+  ): Promise<ProductInCart> {
     return this.productInCartModel.create({ ...dto, user_id: userId });
   }
 
-  async findUserCart(userId: number) {
+  async findUserCart(userId: number): Promise<ProductInCart[]> {
     return this.productInCartModel.findAll({ where: { user_id: userId } });
   }
 
-  async removeProductFromCart(userId: number, productId: number) {
+  async removeProductFromCart(
+    userId: number,
+    productId: number,
+  ): Promise<ProductInCart> {
     const productInCart = await this.productInCartModel.findOne({
       where: { user_id: userId, product_id: productId },
     });

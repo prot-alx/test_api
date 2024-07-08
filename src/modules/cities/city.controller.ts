@@ -18,7 +18,7 @@ export class CityController {
 
   @Post()
   @ApiTags('Location')
-  createCity(@Body() createCityDTO: CreateCityDTO) {
+  createCity(@Body() createCityDTO: CreateCityDTO): Promise<City> {
     return this.cityService.createCity(createCityDTO);
   }
 
@@ -31,25 +31,28 @@ export class CityController {
 
   @Put(':id')
   @ApiTags('Location')
-  updateCity(@Param('id') id: number, @Body() updateCityDTO: UpdateCityDTO) {
+  updateCity(
+    @Param('id') id: number,
+    @Body() updateCityDTO: UpdateCityDTO,
+  ): Promise<City> {
     return this.cityService.updateCity(id, updateCityDTO);
   }
 
   @Delete(':id')
   @ApiTags('Location')
-  deleteCity(@Param('id') id: number) {
+  deleteCity(@Param('id') id: number): Promise<void> {
     return this.cityService.deleteCity(id);
   }
 
   @Get(':id')
   @ApiTags('Location')
-  findCityById(@Param('id') id: number) {
+  findCityById(@Param('id') id: number): Promise<City> {
     return this.cityService.findCityById(id);
   }
 
   @Get()
   @ApiTags('Location')
-  findAllCities() {
+  findAllCities(): Promise<City[]> {
     return this.cityService.findAllCities();
   }
 }

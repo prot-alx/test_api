@@ -1,8 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { CreateReviewDTO, UpdateReviewDTO } from './dto';
 import { Review } from './model/reviews.model';
-import { CreateReviewDTO } from './dto';
-import { UpdateReviewDTO } from './dto';
 
 @Injectable()
 export class ReviewService {
@@ -11,11 +10,15 @@ export class ReviewService {
     private readonly reviewModel: typeof Review,
   ) {}
 
-  async createReview(userId: number, dto: CreateReviewDTO) {
+  async createReview(userId: number, dto: CreateReviewDTO): Promise<Review> {
     return this.reviewModel.create({ ...dto, user_id: userId });
   }
 
-  async updateReview(userId: number, reviewId: number, dto: UpdateReviewDTO) {
+  async updateReview(
+    userId: number,
+    reviewId: number,
+    dto: UpdateReviewDTO,
+  ): Promise<Review> {
     const review = await this.reviewModel.findByPk(reviewId);
     if (review.user_id !== userId) {
       throw new UnauthorizedException();
@@ -24,7 +27,7 @@ export class ReviewService {
     return review;
   }
 
-  async deleteReview(userId: number, reviewId: number) {
+  async deleteReview(userId: number, reviewId: number): Promise<Review> {
     const review = await this.reviewModel.findByPk(reviewId);
     if (review.user_id !== userId) {
       throw new UnauthorizedException();

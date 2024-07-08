@@ -11,6 +11,7 @@ import {
 import { ProductInCartService } from './product-in-cart.service';
 import { CreateProductInCartDTO } from './dto';
 import { JwtAuthGuard } from '../../guards/jwt-guard';
+import { ProductInCart } from './model/products-in-cart.model';
 
 @Controller('cart')
 export class ProductInCartController {
@@ -18,13 +19,16 @@ export class ProductInCartController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async addProductToCart(@Req() req, @Body() dto: CreateProductInCartDTO) {
+  async addProductToCart(
+    @Req() req,
+    @Body() dto: CreateProductInCartDTO,
+  ): Promise<ProductInCart> {
     return this.productInCartService.createProductInCart(req.user.id, dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUserCart(@Req() req) {
+  async getUserCart(@Req() req): Promise<ProductInCart[]> {
     return this.productInCartService.findUserCart(req.user.id);
   }
 
@@ -33,7 +37,7 @@ export class ProductInCartController {
   async removeProductFromCart(
     @Req() req,
     @Param('productId') productId: number,
-  ) {
+  ): Promise<ProductInCart> {
     return this.productInCartService.removeProductFromCart(
       req.user.id,
       productId,

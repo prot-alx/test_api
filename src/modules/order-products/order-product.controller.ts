@@ -10,6 +10,7 @@ import {
 import { OrderProductService } from './order-product.service';
 import { CreateOrderProductDTO, UpdateOrderProductDTO } from './dto';
 import { ApiTags } from '@nestjs/swagger';
+import { OrderProduct } from './model/order-products.model';
 
 @Controller('order-products')
 export class OrderProductController {
@@ -17,7 +18,9 @@ export class OrderProductController {
 
   @Post()
   @ApiTags('Orders')
-  createOrderProduct(@Body() createOrderProductDTO: CreateOrderProductDTO) {
+  createOrderProduct(
+    @Body() createOrderProductDTO: CreateOrderProductDTO,
+  ): Promise<OrderProduct> {
     return this.orderProductService.createOrderProduct(createOrderProductDTO);
   }
 
@@ -26,7 +29,7 @@ export class OrderProductController {
   updateOrderProduct(
     @Param('id') id: number,
     @Body() updateOrderProductDTO: UpdateOrderProductDTO,
-  ) {
+  ): Promise<OrderProduct> {
     return this.orderProductService.updateOrderProduct(
       id,
       updateOrderProductDTO,
@@ -35,19 +38,19 @@ export class OrderProductController {
 
   @Delete(':id')
   @ApiTags('Orders')
-  deleteOrderProduct(@Param('id') id: number) {
+  deleteOrderProduct(@Param('id') id: number): Promise<void> {
     return this.orderProductService.deleteOrderProduct(id);
   }
 
   @Get(':id')
   @ApiTags('Orders')
-  findOrderProductById(@Param('id') id: number) {
+  findOrderProductById(@Param('id') id: number): Promise<OrderProduct> {
     return this.orderProductService.findOrderProductById(id);
   }
 
   @Get()
   @ApiTags('Orders')
-  findAllOrderProducts() {
+  findAllOrderProducts(): Promise<OrderProduct[]> {
     return this.orderProductService.findAllOrderProducts();
   }
 }

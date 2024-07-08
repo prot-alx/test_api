@@ -13,15 +13,18 @@ export class ProductInWishlistService {
   async createProductInWishlist(
     userId: number,
     dto: CreateProductInWishlistDTO,
-  ) {
+  ): Promise<ProductInWishlist> {
     return this.productInWishlistModel.create({ ...dto, user_id: userId });
   }
 
-  async findUserWishlist(userId: number) {
+  async findUserWishlist(userId: number): Promise<ProductInWishlist[]> {
     return this.productInWishlistModel.findAll({ where: { user_id: userId } });
   }
 
-  async removeProductFromWishlist(userId: number, productId: number) {
+  async removeProductFromWishlist(
+    userId: number,
+    productId: number,
+  ): Promise<ProductInWishlist> {
     const productInWishlist = await this.productInWishlistModel.findOne({
       where: { user_id: userId, product_id: productId },
     });

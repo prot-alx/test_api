@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { RecentlyViewedService } from './recently-viewed.service';
 import { CreateRecentlyViewedDTO } from './dto';
 import { ApiTags } from '@nestjs/swagger';
+import { RecentlyViewed } from './model/recently-viewed.model';
 
 @Controller('recently-viewed')
 export class RecentlyViewedController {
@@ -11,7 +12,7 @@ export class RecentlyViewedController {
   @ApiTags('Recently-viewed')
   createRecentlyViewed(
     @Body() createRecentlyViewedDTO: CreateRecentlyViewedDTO,
-  ) {
+  ): Promise<RecentlyViewed> {
     return this.recentlyViewedService.createRecentlyViewed(
       createRecentlyViewedDTO,
     );
@@ -19,19 +20,19 @@ export class RecentlyViewedController {
 
   @Delete(':id')
   @ApiTags('Recently-viewed')
-  deleteRecentlyViewed(@Param('id') id: number) {
+  deleteRecentlyViewed(@Param('id') id: number): Promise<void> {
     return this.recentlyViewedService.deleteRecentlyViewed(id);
   }
 
   @Get(':id')
   @ApiTags('Recently-viewed')
-  findRecentlyViewedById(@Param('id') id: number) {
+  findRecentlyViewedById(@Param('id') id: number): Promise<RecentlyViewed> {
     return this.recentlyViewedService.findRecentlyViewedById(id);
   }
 
   @Get()
   @ApiTags('Recently-viewed')
-  findAllRecentlyViewed() {
+  findAllRecentlyViewed(): Promise<RecentlyViewed[]> {
     return this.recentlyViewedService.findAllRecentlyViewed();
   }
 }

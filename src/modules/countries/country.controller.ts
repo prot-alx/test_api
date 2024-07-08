@@ -18,7 +18,7 @@ export class CountryController {
 
   @Post()
   @ApiTags('Location')
-  createCountry(@Body() createCountryDTO: CreateCountryDTO) {
+  createCountry(@Body() createCountryDTO: CreateCountryDTO): Promise<Country> {
     return this.countryService.createCountry(createCountryDTO);
   }
 
@@ -36,25 +36,25 @@ export class CountryController {
   updateCountry(
     @Param('id') id: number,
     @Body() updateCountryDTO: UpdateCountryDTO,
-  ) {
+  ): Promise<Country> {
     return this.countryService.updateCountry(id, updateCountryDTO);
   }
 
   @Delete(':id')
   @ApiTags('Location')
-  deleteCountry(@Param('id') id: number) {
+  deleteCountry(@Param('id') id: number): Promise<void> {
     return this.countryService.deleteCountry(id);
   }
 
   @Get(':id')
   @ApiTags('Location')
-  findCountryById(@Param('id') id: number) {
+  findCountryById(@Param('id') id: number): Promise<Country> {
     return this.countryService.findCountryById(id);
   }
 
   @Get()
   @ApiTags('Location')
-  findAllCountries() {
+  findAllCountries(): Promise<Country[]> {
     return this.countryService.findAllCountries();
   }
 }
