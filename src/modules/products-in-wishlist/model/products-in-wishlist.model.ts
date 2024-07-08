@@ -14,12 +14,12 @@ export class ProductInWishlist extends Model<ProductInWishlist> {
   @Column
   user_id: number;
 
-  @BelongsTo(() => User)
-  user: User;
-
   @ForeignKey(() => Product)
   @Column
   product_id: number;
+
+  @BelongsTo(() => User)
+  user: User;
 
   @BelongsTo(() => Product)
   product: Product;

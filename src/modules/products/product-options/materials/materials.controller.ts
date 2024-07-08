@@ -8,6 +8,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class MaterialController {
   constructor(private readonly materialService: MaterialService) {}
 
+  //Для добавления массива размеров
+  @ApiTags('Products')
+  @Post('bulk')
+  async bulkCreate(@Body() createCityDTOs: MaterialDTO[]): Promise<Material[]> {
+    return this.materialService.bulkCreateMaterials(createCityDTOs);
+  }
+
   @ApiTags('Products')
   @Post()
   async create(@Body() createMaterialDto: MaterialDTO): Promise<Material> {

@@ -8,6 +8,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class ColorController {
   constructor(private readonly colorService: ColorService) {}
 
+  //Для добавления массива размеров
+  @ApiTags('Products')
+  @Post('bulk')
+  async bulkCreate(@Body() colorsDTOs: ColorDTO[]): Promise<Color[]> {
+    return this.colorService.bulkCreateColors(colorsDTOs);
+  }
+
   @ApiTags('Products')
   @Post()
   async create(@Body() createColorDto: ColorDTO): Promise<Color> {

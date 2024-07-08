@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProductInWishlist } from './model/products-in-wishlist.model';
 import { CreateProductInWishlistDTO } from './dto';
@@ -11,28 +11,24 @@ export class ProductInWishlistService {
   ) {}
 
   async createProductInWishlist(
-    createProductInWishlistDTO: CreateProductInWishlistDTO,
-  ): Promise<ProductInWishlist> {
-    return await this.productInWishlistModel.create(createProductInWishlistDTO);
+    userId: number,
+    dto: CreateProductInWishlistDTO,
+  ) {
+    return this.productInWishlistModel.create({ ...dto, user_id: userId });
   }
 
-  async deleteProductInWishlist(id: number): Promise<void> {
-    const productInWishlist = await this.productInWishlistModel.findByPk(id);
+  async findUserWishlist(userId: number) {
+    return this.productInWishlistModel.findAll({ where: { user_id: userId } });
+  }
+
+  async removeProductFromWishlist(userId: number, productId: number) {
+    const productInWishlist = await this.productInWishlistModel.findOne({
+      where: { user_id: userId, product_id: productId },
+    });
     if (!productInWishlist) {
-      throw new NotFoundException(`ProductInWishlist with ID ${id} not found`);
+      throw new UnauthorizedException();
     }
     await productInWishlist.destroy();
-  }
-
-  async findProductInWishlistById(id: number): Promise<ProductInWishlist> {
-    const productInWishlist = await this.productInWishlistModel.findByPk(id);
-    if (!productInWishlist) {
-      throw new NotFoundException(`ProductInWishlist with ID ${id} not found`);
-    }
     return productInWishlist;
-  }
-
-  async findAllProductsInWishlist(): Promise<ProductInWishlist[]> {
-    return await this.productInWishlistModel.findAll();
   }
 }

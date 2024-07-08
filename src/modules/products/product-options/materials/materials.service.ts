@@ -17,4 +17,8 @@ export class MaterialService {
   async findAll(): Promise<Material[]> {
     return this.materialModel.findAll();
   }
+
+  async bulkCreateMaterials(materialDTOs: MaterialDTO[]): Promise<Material[]> {
+    return await this.materialModel.bulkCreate(materialDTOs);
+  }
 }

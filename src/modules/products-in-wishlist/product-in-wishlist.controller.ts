@@ -1,34 +1,50 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Delete,
+  Param,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { ProductInWishlistService } from './product-in-wishlist.service';
-import { CreateProductInWishlistDTO } from './dto';
+import { CreateProductInWishlistDTO } from './dto/';
+import { JwtAuthGuard } from '../../guards/jwt-guard';
 
-@Controller('products-in-wishlist')
+@Controller('wishlist')
 export class ProductInWishlistController {
   constructor(
     private readonly productInWishlistService: ProductInWishlistService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  createProductInWishlist(
-    @Body() createProductInWishlistDTO: CreateProductInWishlistDTO,
+  async addProductToWishlist(
+    @Req() req,
+    @Body() dto: CreateProductInWishlistDTO,
   ) {
     return this.productInWishlistService.createProductInWishlist(
-      createProductInWishlistDTO,
+      req.user.id,
+      dto,
     );
   }
 
-  @Delete(':id')
-  deleteProductInWishlist(@Param('id') id: number) {
-    return this.productInWishlistService.deleteProductInWishlist(id);
-  }
-
-  @Get(':id')
-  findProductInWishlistById(@Param('id') id: number) {
-    return this.productInWishlistService.findProductInWishlistById(id);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAllProductsInWishlist() {
-    return this.productInWishlistService.findAllProductsInWishlist();
+  async getUserWishlist(@Req() req) {
+    return this.productInWishlistService.findUserWishlist(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':productId')
+  async removeProductFromWishlist(
+    @Req() req,
+    @Param('productId') productId: number,
+  ) {
+    return this.productInWishlistService.removeProductFromWishlist(
+      req.user.id,
+      productId,
+    );
   }
 }

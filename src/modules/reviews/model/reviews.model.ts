@@ -4,11 +4,9 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
-  HasMany,
 } from 'sequelize-typescript';
 import { User } from '../../users/models/user.model';
 import { Product } from '../../products/models/product.model';
-import { ReviewLike } from '../../review-likes/model/review-likes.model';
 
 @Table
 export class Review extends Model<Review> {
@@ -16,15 +14,9 @@ export class Review extends Model<Review> {
   @Column
   user_id: number;
 
-  @BelongsTo(() => User)
-  user: User;
-
   @ForeignKey(() => Product)
   @Column
   product_id: number;
-
-  @BelongsTo(() => Product)
-  product: Product;
 
   @Column
   rating: number;
@@ -35,6 +27,9 @@ export class Review extends Model<Review> {
   @Column
   created_at: Date;
 
-  @HasMany(() => ReviewLike)
-  reviewLikes: ReviewLike[];
+  @BelongsTo(() => User)
+  user: User;
+
+  @BelongsTo(() => Product)
+  product: Product;
 }

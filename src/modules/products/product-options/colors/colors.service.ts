@@ -17,4 +17,8 @@ export class ColorService {
   async findAll(): Promise<Color[]> {
     return this.colorModel.findAll();
   }
+
+  async bulkCreateColors(colorsDTOs: ColorDTO[]): Promise<Color[]> {
+    return await this.colorModel.bulkCreate(colorsDTOs);
+  }
 }

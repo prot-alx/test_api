@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Review } from './model/reviews.model';
-import { CreateReviewDTO, UpdateReviewDTO } from './dto';
+import { CreateReviewDTO } from './dto';
+import { UpdateReviewDTO } from './dto';
 
 @Injectable()
 export class ReviewService {
@@ -10,39 +11,25 @@ export class ReviewService {
     private readonly reviewModel: typeof Review,
   ) {}
 
-  async createReview(createReviewDTO: CreateReviewDTO): Promise<Review> {
-    return await this.reviewModel.create(createReviewDTO);
+  async createReview(userId: number, dto: CreateReviewDTO) {
+    return this.reviewModel.create({ ...dto, user_id: userId });
   }
 
-  async updateReview(
-    id: number,
-    updateReviewDTO: UpdateReviewDTO,
-  ): Promise<Review> {
-    const review = await this.reviewModel.findByPk(id);
-    if (!review) {
-      throw new NotFoundException(`Review with ID ${id} not found`);
+  async updateReview(userId: number, reviewId: number, dto: UpdateReviewDTO) {
+    const review = await this.reviewModel.findByPk(reviewId);
+    if (review.user_id !== userId) {
+      throw new UnauthorizedException();
     }
-    await review.update(updateReviewDTO);
-    return review.reload();
-  }
-
-  async deleteReview(id: number): Promise<void> {
-    const review = await this.reviewModel.findByPk(id);
-    if (!review) {
-      throw new NotFoundException(`Review with ID ${id} not found`);
-    }
-    await review.destroy();
-  }
-
-  async findReviewById(id: number): Promise<Review> {
-    const review = await this.reviewModel.findByPk(id);
-    if (!review) {
-      throw new NotFoundException(`Review with ID ${id} not found`);
-    }
+    await review.update(dto);
     return review;
   }
 
-  async findAllReviews(): Promise<Review[]> {
-    return await this.reviewModel.findAll();
+  async deleteReview(userId: number, reviewId: number) {
+    const review = await this.reviewModel.findByPk(reviewId);
+    if (review.user_id !== userId) {
+      throw new UnauthorizedException();
+    }
+    await review.destroy();
+    return review;
   }
 }

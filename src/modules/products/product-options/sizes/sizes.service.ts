@@ -17,4 +17,8 @@ export class SizeService {
   async findAll(): Promise<Size[]> {
     return this.sizeModel.findAll();
   }
+
+  async bulkCreateSizes(sizesDTOs: SizeDTO[]): Promise<Size[]> {
+    return await this.sizeModel.bulkCreate(sizesDTOs);
+  }
 }

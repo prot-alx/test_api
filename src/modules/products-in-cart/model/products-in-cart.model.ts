@@ -14,16 +14,16 @@ export class ProductInCart extends Model<ProductInCart> {
   @Column
   user_id: number;
 
-  @BelongsTo(() => User)
-  user: User;
-
   @ForeignKey(() => Product)
   @Column
   product_id: number;
 
-  @BelongsTo(() => Product)
-  product: Product;
-
   @Column
   product_quantity: number;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @BelongsTo(() => Product)
+  product: Product;
 }

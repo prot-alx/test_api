@@ -45,4 +45,10 @@ export class CountryService {
   async findAllCountries(): Promise<Country[]> {
     return await this.countryModel.findAll();
   }
+
+  async bulkCreateCountries(
+    createCountryDTOs: CreateCountryDTO[],
+  ): Promise<Country[]> {
+    return await this.countryModel.bulkCreate(createCountryDTOs);
+  }
 }

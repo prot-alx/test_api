@@ -1,49 +1,42 @@
 import {
   Controller,
-  Get,
   Post,
-  Put,
+  Body,
+  Get,
   Delete,
   Param,
-  Body,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ProductInCartService } from './product-in-cart.service';
-import { CreateProductInCartDTO, UpdateProductInCartDTO } from './dto';
+import { CreateProductInCartDTO } from './dto';
+import { JwtAuthGuard } from '../../guards/jwt-guard';
 
-@Controller('products-in-cart')
+@Controller('cart')
 export class ProductInCartController {
   constructor(private readonly productInCartService: ProductInCartService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  createProductInCart(@Body() createProductInCartDTO: CreateProductInCartDTO) {
-    return this.productInCartService.createProductInCart(
-      createProductInCartDTO,
-    );
+  async addProductToCart(@Req() req, @Body() dto: CreateProductInCartDTO) {
+    return this.productInCartService.createProductInCart(req.user.id, dto);
   }
 
-  @Put(':id')
-  updateProductInCart(
-    @Param('id') id: number,
-    @Body() updateProductInCartDTO: UpdateProductInCartDTO,
-  ) {
-    return this.productInCartService.updateProductInCart(
-      id,
-      updateProductInCartDTO,
-    );
-  }
-
-  @Delete(':id')
-  deleteProductInCart(@Param('id') id: number) {
-    return this.productInCartService.deleteProductInCart(id);
-  }
-
-  @Get(':id')
-  findProductInCartById(@Param('id') id: number) {
-    return this.productInCartService.findProductInCartById(id);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAllProductsInCart() {
-    return this.productInCartService.findAllProductsInCart();
+  async getUserCart(@Req() req) {
+    return this.productInCartService.findUserCart(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':productId')
+  async removeProductFromCart(
+    @Req() req,
+    @Param('productId') productId: number,
+  ) {
+    return this.productInCartService.removeProductFromCart(
+      req.user.id,
+      productId,
+    );
   }
 }
