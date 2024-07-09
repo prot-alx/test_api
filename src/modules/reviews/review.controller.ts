@@ -20,7 +20,7 @@ export class ReviewController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async addReview(@Req() req, @Body() dto: CreateReviewDTO): Promise<Review> {
-    return this.reviewService.createReview(req.user.id, dto);
+    return this.reviewService.createReview(req.user.userId, dto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,7 +30,7 @@ export class ReviewController {
     @Param('reviewId') reviewId: number,
     @Body() dto: UpdateReviewDTO,
   ): Promise<Review> {
-    return this.reviewService.updateReview(req.user.id, reviewId, dto);
+    return this.reviewService.updateReview(req.user.userId, reviewId, dto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -39,6 +39,6 @@ export class ReviewController {
     @Req() req,
     @Param('reviewId') reviewId: number,
   ): Promise<Review> {
-    return this.reviewService.deleteReview(req.user.id, reviewId);
+    return this.reviewService.deleteReview(req.user.userId, reviewId);
   }
 }

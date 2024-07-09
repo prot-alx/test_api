@@ -25,8 +25,9 @@ export class ProductInWishlistController {
     @Req() req,
     @Body() dto: CreateProductInWishlistDTO,
   ): Promise<ProductInWishlist> {
+    console.log(req.user);
     return this.productInWishlistService.createProductInWishlist(
-      req.user.id,
+      req.user.userId,
       dto,
     );
   }

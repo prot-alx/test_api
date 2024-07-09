@@ -4,9 +4,5 @@ import { IsNumber } from 'class-validator';
 export class CreateProductInWishlistDTO {
   @ApiProperty()
   @IsNumber()
-  user_id: number;
-
-  @ApiProperty()
-  @IsNumber()
   product_id: number;
 }
