@@ -51,4 +51,16 @@ export class CountryService {
   ): Promise<Country[]> {
     return await this.countryModel.bulkCreate(createCountryDTOs);
   }
+
+  async findAllCountriesSorted(): Promise<Country[]> {
+    const countries = await this.countryModel.findAll();
+    const countryWithIdOne = countries.find((country) => country.id === 1);
+    const sortedCountries = countries
+      .filter((country) => country.id !== 1)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    if (countryWithIdOne) {
+      sortedCountries.unshift(countryWithIdOne);
+    }
+    return sortedCountries;
+  }
 }

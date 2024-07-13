@@ -15,6 +15,11 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('countries')
 export class CountryController {
   constructor(private readonly countryService: CountryService) {}
+  @Get()
+  @ApiTags('Location')
+  findAllSortedCountries(): Promise<Country[]> {
+    return this.countryService.findAllCountriesSorted();
+  }
 
   @Post()
   @ApiTags('Location')
@@ -50,11 +55,5 @@ export class CountryController {
   @ApiTags('Location')
   findCountryById(@Param('id') id: number): Promise<Country> {
     return this.countryService.findCountryById(id);
-  }
-
-  @Get()
-  @ApiTags('Location')
-  findAllCountries(): Promise<Country[]> {
-    return this.countryService.findAllCountries();
   }
 }
