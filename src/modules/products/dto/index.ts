@@ -11,10 +11,6 @@ export class CreateProductDTO {
   price: number;
 
   @ApiProperty()
-  @IsString()
-  image: string;
-
-  @ApiProperty()
   @IsNumber()
   rating: number;
 

@@ -1,6 +1,7 @@
 import { AuthModule } from './auth/auth.module';
 import { CityModule } from './cities/city.module';
 import { CountryModule } from './countries/country.module';
+import { ImageUploadModule } from './image-upload/image-upload.module';
 import { OrderProductModule } from './order-products/order-product.module';
 import { OrderStatusModule } from './order-statuses/order-status.module';
 import { OrderModule } from './orders/order.module';
@@ -51,4 +52,5 @@ export const modules = [
   TokenModule,
   AuthModule,
   UserModule,
+  ImageUploadModule,
 ];

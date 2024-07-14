@@ -1,17 +1,35 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './products.service';
 import { CreateProductDTO } from './dto';
 import { ApiTags, ApiQuery } from '@nestjs/swagger';
 import { Product } from './models/product.model';
+import { ImageUploadService } from '../image-upload/image-upload.service';
 
 @Controller('products')
 @ApiTags('Products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly imageUploadService: ImageUploadService,
+  ) {}
 
   @Post()
-  async create(@Body() createProductDTO: CreateProductDTO): Promise<Product> {
-    return this.productService.create(createProductDTO);
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createProductDTO: CreateProductDTO,
+  ): Promise<Product> {
+    return this.productService.create(createProductDTO, file);
   }
 
   @Get()

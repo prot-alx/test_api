@@ -6,19 +6,26 @@ import { Category } from './product-options/categories/model/category.model';
 import { Color } from './product-options/colors/model/color.model';
 import { Size } from './product-options/sizes/model/size.model';
 import { FindAndCountOptions, Op } from 'sequelize';
+import { ImageUploadService } from '../image-upload/image-upload.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(Product)
     private readonly productModel: typeof Product,
+    private readonly imageUploadService: ImageUploadService,
   ) {}
 
-  async create(createProductDTO: CreateProductDTO): Promise<Product> {
+  async create(
+    createProductDTO: CreateProductDTO,
+    imageFile: Express.Multer.File,
+  ): Promise<Product> {
+    const imagePath = await this.imageUploadService.uploadImage(imageFile);
+
     const product = new Product();
     product.name = createProductDTO.name;
     product.price = createProductDTO.price;
-    product.image = createProductDTO.image;
+    product.image = imagePath;
     product.rating = createProductDTO.rating;
     product.clothesId = createProductDTO.clothesId;
     product.materialId = createProductDTO.materialId;
