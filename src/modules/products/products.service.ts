@@ -17,15 +17,16 @@ export class ProductService {
   ) {}
 
   async create(
-    createProductDTO: CreateProductDTO,
     imageFile: Express.Multer.File,
+    createProductDTO: CreateProductDTO,
   ): Promise<Product> {
-    const imagePath = await this.imageUploadService.uploadImage(imageFile);
-
+    // console.log({ createProductDTO });
+    // const imagePath = await this.imageUploadService.uploadImage(imageFile);
+    // console.log('imagepath productService', imagePath);
     const product = new Product();
     product.name = createProductDTO.name;
     product.price = createProductDTO.price;
-    product.image = imagePath;
+    product.image = createProductDTO.image;
     product.rating = createProductDTO.rating;
     product.clothesId = createProductDTO.clothesId;
     product.materialId = createProductDTO.materialId;

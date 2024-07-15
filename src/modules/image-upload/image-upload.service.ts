@@ -18,10 +18,9 @@ export class ImageUploadService {
 
   async uploadImage(file: Express.Multer.File): Promise<string> {
     if (!file) {
-      throw new Error('No file provided');
+      return null;
     }
+    console.log('uploadImage service', file, file.path);
     return file.path;
   }
 }
-
-//curl -X POST http://localhost:3000/image-upload \ -F 'file=E:/imgs/1.jpg'

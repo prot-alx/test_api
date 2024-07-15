@@ -16,6 +16,10 @@ export class CreateProductDTO {
 
   @ApiProperty()
   @IsNumber()
+  image: string;
+
+  @ApiProperty()
+  @IsNumber()
   clothesId: number;
 
   @ApiProperty()

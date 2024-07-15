@@ -17,6 +17,9 @@ export class ImageUploadController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<{ imageUrl: string }> {
     const imageUrl = await this.imageUploadService.uploadImage(file);
+    console.log({ imageUrl });
     return { imageUrl };
   }
 }
+
+//curl -X POST http://localhost:3000/image-upload -F "file=@\"E:/imgs/1.jpg\""

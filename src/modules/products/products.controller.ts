@@ -29,7 +29,7 @@ export class ProductController {
     @UploadedFile() file: Express.Multer.File,
     @Body() createProductDTO: CreateProductDTO,
   ): Promise<Product> {
-    return this.productService.create(createProductDTO, file);
+    return this.productService.create(file, createProductDTO);
   }
 
   @Get()
