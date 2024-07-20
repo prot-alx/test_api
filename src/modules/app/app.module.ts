@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -28,6 +30,10 @@ import { modules } from '../modules';
         logging: (msg) => console.log(msg),
         models,
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../../', 'uploads'),
+      serveRoot: '/uploads',
     }),
     ...modules,
   ],
