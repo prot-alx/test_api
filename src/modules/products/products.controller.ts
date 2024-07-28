@@ -11,7 +11,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './products.service';
 import { CreateProductDTO } from './dto';
-import { ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Product } from './models/product.model';
 import { ImageUploadService } from '../image-upload/image-upload.service';
 
@@ -38,22 +38,15 @@ export class ProductController {
   }
 
   @Get('sorted-and-filtered')
-  @ApiQuery({ name: 'sortField', required: false })
-  @ApiQuery({ name: 'sortOrder', required: false })
-  @ApiQuery({ name: 'minPrice', required: false, type: Number })
-  @ApiQuery({ name: 'maxPrice', required: false, type: Number })
-  @ApiQuery({ name: 'isSale', required: false, type: Boolean })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'pageSize', required: false, type: Number })
   async findAllSortedAndFiltered(
     @Query('sortField') sortField: string,
-    @Query('sortOrder') sortOrder: 'ASC' | 'DESC' = 'ASC',
-    @Query('minPrice') minPrice: number,
-    @Query('maxPrice') maxPrice: number,
-    @Query('isSale') isSale: boolean,
+    @Query('sortOrder') sortOrder: 'ASC' | 'DESC',
+    @Query('minPrice') minPrice?: number,
+    @Query('maxPrice') maxPrice?: number,
+    @Query('isSale') isSale?: boolean,
     @Query('page') page: number = 1,
     @Query('pageSize') pageSize: number = 10,
-  ): Promise<{ rows: Product[]; count: number }> {
+  ) {
     return this.productService.findAllSortedAndFiltered(
       sortField,
       sortOrder,

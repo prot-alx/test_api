@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from './models/product.model';
 import { CreateProductDTO } from './dto';
@@ -20,9 +20,6 @@ export class ProductService {
     imageFile: Express.Multer.File,
     createProductDTO: CreateProductDTO,
   ): Promise<Product> {
-    // console.log({ createProductDTO });
-    // const imagePath = await this.imageUploadService.uploadImage(imageFile);
-    // console.log('imagepath productService', imagePath);
     const product = new Product();
     product.name = createProductDTO.name;
     product.price = createProductDTO.price;
@@ -66,6 +63,16 @@ export class ProductService {
     page: number = 1,
     pageSize: number = 10,
   ): Promise<{ rows: Product[]; count: number }> {
+    if (page < 1) {
+      throw new BadRequestException('Page number must be greater than zero');
+    }
+
+    const totalProducts = await this.productModel.count();
+    const totalPages = Math.ceil(totalProducts / pageSize);
+    if (page > totalPages) {
+      page = totalPages;
+    }
+
     const options: FindAndCountOptions = {
       where: {},
       order: [[sortField, sortOrder]],
