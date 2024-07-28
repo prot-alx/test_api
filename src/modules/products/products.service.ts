@@ -62,35 +62,52 @@ export class ProductService {
     isSale?: boolean,
     page: number = 1,
     pageSize: number = 10,
-  ): Promise<{ rows: Product[]; count: number }> {
+  ): Promise<{ rows: Product[]; count: number; totalPages: number }> {
     if (page < 1) {
       throw new BadRequestException('Page number must be greater than zero');
     }
 
-    const totalProducts = await this.productModel.count();
+    const where: any = {};
+
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      where.price = {
+        [Op.and]: [{ [Op.gte]: minPrice }, { [Op.lte]: maxPrice }],
+      };
+    } else if (minPrice !== undefined) {
+      where.price = { [Op.gte]: minPrice };
+    } else if (maxPrice !== undefined) {
+      where.price = { [Op.lte]: maxPrice };
+    }
+
+    if (isSale !== undefined) {
+      where.isSale = isSale;
+    }
+
+    // Сначала выполняем запрос для подсчета продуктов с учетом фильтров
+    const totalProducts = await this.productModel.count({ where });
+
+    // Рассчитываем общее количество страниц
     const totalPages = Math.ceil(totalProducts / pageSize);
+
+    // Обрабатываем случай, когда страница больше общего количества страниц
     if (page > totalPages) {
       page = totalPages;
     }
 
     const options: FindAndCountOptions = {
-      where: {},
+      where,
       order: [[sortField, sortOrder]],
       limit: pageSize,
       offset: (page - 1) * pageSize,
       include: [Category, Color, Size],
     };
 
-    if (minPrice !== undefined) {
-      options.where['price'] = { [Op.gte]: minPrice };
-    }
-    if (maxPrice !== undefined) {
-      options.where['price'] = { [Op.lte]: maxPrice };
-    }
-    if (isSale !== undefined) {
-      options.where['isSale'] = isSale;
-    }
+    const result = await this.productModel.findAndCountAll(options);
 
-    return await this.productModel.findAndCountAll(options);
+    return {
+      rows: result.rows,
+      count: result.count,
+      totalPages: totalPages,
+    };
   }
 }
