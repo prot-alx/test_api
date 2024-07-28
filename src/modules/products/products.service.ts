@@ -69,6 +69,16 @@ export class ProductService {
 
     const where: any = {};
 
+    // type Filter = {
+    //   minPrice?: number;
+    //   maxPrice?: number;
+    //   isSale?: boolean;
+    // };
+    // const filter: Filter = {};
+    // if (isSale) filter.isSale = true;
+    // // if (minPrice) filter.minPrice = minPrice;
+    // // if (maxPrice) filter.maxPrice = maxPrice;
+
     if (minPrice !== undefined && maxPrice !== undefined) {
       where.price = {
         [Op.and]: [{ [Op.gte]: minPrice }, { [Op.lte]: maxPrice }],
@@ -79,7 +89,7 @@ export class ProductService {
       where.price = { [Op.lte]: maxPrice };
     }
 
-    if (isSale !== undefined) {
+    if (isSale) {
       where.isSale = isSale;
     }
 
@@ -89,12 +99,8 @@ export class ProductService {
     // Рассчитываем общее количество страниц
     const totalPages = Math.ceil(totalProducts / pageSize);
 
-    // Обрабатываем случай, когда страница больше общего количества страниц
-    if (page > totalPages) {
-      page = totalPages;
-    }
-
     const options: FindAndCountOptions = {
+      // where: filter,
       where,
       order: [[sortField, sortOrder]],
       limit: pageSize,
